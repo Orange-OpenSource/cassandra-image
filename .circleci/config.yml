@@ -1,0 +1,85 @@
+version: 2.1
+
+executors:
+  docker-publisher:
+    docker:
+      - image: circleci/buildpack-deps:stretch
+
+experimental:
+  notify:
+    branches:
+      only:
+        - master
+
+jobs:
+
+  build:
+    executor: docker-publisher
+    steps:
+    - checkout
+
+    - setup_remote_docker
+    - run:
+        name: Build Cassandra image
+        command: make build
+    - deploy:
+        name: Push image to Docker Hub
+        command: |
+          echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USER --password-stdin
+          make push
+
+  build-cqlsh:
+    #<<: *defaults
+    executor: docker-publisher
+    steps:
+    - checkout
+
+    - setup_remote_docker
+    - run:
+        name: Build Cassandra image with CQLSH
+        command: make build-cqlsh
+    - deploy:
+        name: Push image with CQLSH to Docker Hub
+        command: |
+          echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USER --password-stdin
+          make push-cqlsh
+
+workflows:
+  version: 2
+
+#  branches:
+#    jobs:
+#      - build:
+#          filters:
+#            branches:
+#              ignore: /master/
+#      - build-cqlsh:
+#          filters:
+#            branches:
+#              ignore: /master/
+
+  build-push:
+    jobs:
+
+      - build
+#          filters:
+#            branches:
+#              only: master
+
+      - build-cqlsh
+#          filters:
+#            branches:
+#              only: master
+
+#  tags:
+#    jobs:
+
+#      - build:
+#          filters:
+#            branches:
+#              ignore: /.*/
+
+#      - build-cqlsh:
+#          filters:
+#            branches:
+#              ignore: /.*/
