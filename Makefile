@@ -42,12 +42,12 @@ params:
 	echo $(VERSION) $(JAVA_VERSION) $(CASSANDRA_VERSION)
 	echo $(TAG)
 
-build:
+build: params
 	docker build --pull --build-arg "CASSANDRA_VERSION=${CASSANDRA_VERSION}" \
 							 --build-arg https_proxy=$(https_proxy) --build-arg http_proxy=$(http_proxy) \
 							 -t ${PROJECT}:${TAG} .
 
-build-cqlsh:
+build-cqlsh: params
 	docker build --pull --build-arg "CASSANDRA_VERSION=${CASSANDRA_VERSION}" \
 							--build-arg="CQLSH_CONTAINER=1" \
 							 --build-arg https_proxy=$(https_proxy) --build-arg http_proxy=$(http_proxy) \
