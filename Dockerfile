@@ -53,12 +53,6 @@ ENV \
 COPY files /
 
 RUN set -ex; \
-    \
-    # this is temporary waiting for this MR to be accepted https://github.com/docker-library/official-images/pull/6028;
-    # https://github.com/docker-library/openjdk/issues/331#issuecomment-498834472;
-    	find "$JAVA_HOME/lib" -name '*.so' -exec dirname '{}' ';' | sort -u > /etc/ld.so.conf.d/docker-openjdk.conf; \
-      	ldconfig; \
-    \
     echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections; \
     export CASSANDRA_VERSION=${CASSANDRA_VERSION:-$CASSANDRA_RELEASE}; \
     export CASSANDRA_HOME=/usr/local/apache-cassandra-${CASSANDRA_VERSION}; \
