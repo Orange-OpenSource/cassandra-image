@@ -60,6 +60,7 @@ RUN set -ex; \
         libjemalloc1 \
         localepurge \
         wget \
+        netcat \
         jq; \
     wget -q -O - "http://search.maven.org/remotecontent?filepath=io/prometheus/jmx/jmx_prometheus_javaagent/${PROMETHEUS_VERSION}/jmx_prometheus_javaagent-${PROMETHEUS_VERSION}.jar" > /usr/local/share/prometheus-agent.jar; \
     wget -q -O - "http://search.maven.org/remotecontent?filepath=org/jolokia/jolokia-jvm/${JOLOKIA_VERSION}/jolokia-jvm-${JOLOKIA_VERSION}-agent.jar" > /usr/local/share/jolokia-agent.jar; \

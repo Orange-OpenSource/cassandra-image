@@ -41,18 +41,35 @@ if [ -z "$CASSANDRA_SEEDS" ]; then
     HOSTNAME=$(hostname -f)
     CASSANDRA_SEEDS=$(hostname -f)
 else
+    echo "CASSANDRA_SEEDS=$CASSANDRA_SEEDS"
     HOSTNAME=$POD_NAME.$SERVICE_NAME.$POD_NAMESPACE
     #If host is in the SeedList we want to remove it
     if [[ $CASSANDRA_SEEDS =~ $HOSTNAME.* ]]; then
         CASSANDRA_SEEDS=$(echo $CASSANDRA_SEEDS | sed "s/$HOSTNAME//" | sed -e "s/,$//" -e "s/^,//" -e "s/,,/,/")
         echo "We've remove host from seedList"
+    else
+        echo "Node $HOSTNAME is not a seed"
     fi
-fi
 
-# If we can't ping first node, that mean that cluster don't already exists, we set seed to hostname 
-if ! host $(echo $CASSANDRA_SEEDS | cut -d',' -f1); then
-    echo "Can't ping first seed, must be first node we sed CASSANDRA_SEED=hostname" ;
-    CASSANDRA_SEEDS=$(hostname -f);
+    #test if this is the first node in the cluster: try to connect to each nodes
+    echo $IFS
+    IFS=',' read -a array <<<$CASSANDRA_SEEDS
+    firstNode=true
+    for cassandra in ${array[@]}; do
+        echo "Try to connect to $cassandra" ;
+        if nc -z -w5 $cassandra 9042; then
+            echo "Conected!"
+            firstNode=false
+            break
+        fi
+    done
+    if [ "$firstNode" = true ]; then
+        echo "***"
+        echo "Can't connect first seed, must be first node we sed CASSANDRA_SEED=$(hostname -f)" ;
+        echo "***"
+        CASSANDRA_SEEDS=$(hostname -f);
+    fi
+
 fi
 
 echo "CASSANDRA_SEEDS=$CASSANDRA_SEEDS"
