@@ -1,6 +1,17 @@
 
 # ChangeLog
 
+##  3.11.3-8u201-0.3.2
+
+- New Debian for the baseImage (debian stretch to buster)
+- change package libjemalloc1 to libjemalloc2 (change in debian buster) 
+
+##  3.11.3-8u201-0.3.1
+
+- Cassandra version 3.11.4
+- Java 8u212
+- JMX Prometheus metrics version 0.11.0
+
 ##  3.11.3-8u201-0.3.0
 
 - Cassandra version 3.11.3

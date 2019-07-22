@@ -12,7 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# OpenJDK base image:
+# see https://github.com/docker-library/repo-info/blob/master/repos/openjdk/local/8u222-jre-slim.md
+# the Dockerfile for this image is here : https://github.com/docker-library/openjdk/blob/master/8/jre/Dockerfile
+
 FROM amd64/openjdk:8u212-jre-slim
+
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -57,7 +62,7 @@ RUN set -ex; \
     export CASSANDRA_VERSION=${CASSANDRA_VERSION:-$CASSANDRA_RELEASE}; \
     export CASSANDRA_HOME=/usr/local/apache-cassandra-${CASSANDRA_VERSION}; \
     apt-get update && apt-get -qq -y install --no-install-recommends \
-        libjemalloc1 \
+        libjemalloc2 \
         localepurge \
         wget \
         netcat \
