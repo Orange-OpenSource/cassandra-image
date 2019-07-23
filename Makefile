@@ -19,7 +19,7 @@ else
 	PROJECT:=$(CI_REGISTRY_IMAGE)
 endif
 
-VERSION:=0.3.1
+VERSION:=0.3.2
 CASSANDRA_VERSION:=3.11.4
 
 JAVA_VERSION=$(shell cat Dockerfile | grep FROM | cut -d':' -f2- | cut -d'-' -f1)
