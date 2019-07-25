@@ -47,39 +47,15 @@ jobs:
 workflows:
   version: 2
 
-#  branches:
-#    jobs:
-#      - build:
-#          filters:
-#            branches:
-#              ignore: /master/
-#      - build-cqlsh:
-#          filters:
-#            branches:
-#              ignore: /master/
-
   build-push:
     jobs:
 
-      - build
-#          filters:
-#            branches:
-#              only: master
+      - build:
+          filters:
+            tags:
+              only: /.*/
 
-      - build-cqlsh
-#          filters:
-#            branches:
-#              only: master
-
-#  tags:
-#    jobs:
-
-#      - build:
-#          filters:
-#            branches:
-#              ignore: /.*/
-
-#      - build-cqlsh:
-#          filters:
-#            branches:
-#              ignore: /.*/
+      - build-cqlsh:
+          filters:
+            tags:
+              only: /.*/
