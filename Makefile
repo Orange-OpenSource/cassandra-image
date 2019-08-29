@@ -67,4 +67,3 @@ ifeq ($(CIRCLE_BRANCH),master)
 endif
 	docker tag ${PROJECT}:${TAG}-cqlsh ${PROJECT}:${BRANCH}-cqlsh
 	docker push ${PROJECT}:${BRANCH}-cqlsh
-

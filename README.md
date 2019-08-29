@@ -3,15 +3,14 @@
 
 # Cassandra Docker image to run on Kubernetes cluster with CassKop Cassandra operator
 
-The goal of this project is to provide a container optimized for running Apache Cassandra on Kubernetes using the [CassKop](https://github.com/Orange-OpenSource/cassandra-k8s-operator)
-Cassandra operator developed by Orange.
+The goal of this project is to provide a container optimized for running Apache Cassandra on Kubernetes using [CassKop](https://github.com/Orange-OpenSource/cassandra-k8s-operator), the Cassandra operator developed by Orange.
 
 The Images integrates :
 
 - [Cassandra](http://www.apache.org/dyn/closer.cgi/cassandra) version 3.11.4
 - [Jolokia](http://repo1.maven.org/maven2/org/jolokia/jolokia-jvm/1.6.1/) a **JMX-HTTP** bridge providing JMX with JSON
   over HTTP version 1.6.1
-- [jmx_prometheus_javaagent](https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/) exporter version 0.11.0
+- [cassandra-exporter](https://github.com/instaclustr/cassandra-exporter) version 0.9.7
 - [Dumb-init](https://github.com/Yelp/dumb-init/releases/) a minimal init system for Linux containers version 1.2.2
 - The base Image is  amd64/openjdk:8u212-jre-slim
 
@@ -50,5 +49,3 @@ make build-cqlsh
 
 This project is based on work done at [Google](https://github.com/GoogleCloudPlatform/gke-stateful-applications-demo/tree/master/container) and has been updated to fit
 with Orange Cassandra Operator needs.
-
-.
