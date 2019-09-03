@@ -67,7 +67,7 @@ else
     if [ "$firstNode" = true ]; then
         CASSANDRA_SEEDS=$(hostname -f);
         echo "***"
-        echo "Can't connect first seed, must be first node we sed CASSANDRA_SEED=${CASSANDRA_SEEDS}" ;
+        echo "Can't connect to first seed, must be first node. We set CASSANDRA_SEED=${CASSANDRA_SEEDS}" ;
         echo "***"
     fi
 
