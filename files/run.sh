@@ -39,7 +39,7 @@ default_value()
 # we are doing StatefulSet or just setting our seeds
 if [ -z "$CASSANDRA_SEEDS" ]; then
     HOSTNAME=$(hostname -f)
-    CASSANDRA_SEEDS=$(hostname -f)
+    CASSANDRA_SEEDS=$HOSTNAME
 else
     echo "CASSANDRA_SEEDS=$CASSANDRA_SEEDS"
     HOSTNAME=$POD_NAME.$SERVICE_NAME.$POD_NAMESPACE
@@ -58,16 +58,17 @@ else
     for cassandra in ${array[@]}; do
         echo "Try to connect to $cassandra" ;
         if nc -z -w5 $cassandra 9042; then
-            echo "Conected!"
+            echo "Connected!"
             firstNode=false
             break
         fi
     done
+
     if [ "$firstNode" = true ]; then
-        echo "***"
-        echo "Can't connect first seed, must be first node we sed CASSANDRA_SEED=$(hostname -f)" ;
-        echo "***"
         CASSANDRA_SEEDS=$(hostname -f);
+        echo "***"
+        echo "Can't connect to first seed, must be first node. We set CASSANDRA_SEED=${CASSANDRA_SEEDS}" ;
+        echo "***"
     fi
 
 fi

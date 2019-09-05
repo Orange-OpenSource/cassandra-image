@@ -51,9 +51,8 @@ ENV \
     CASSANDRA_RELEASE=${CASSANDRA_VERSION} \
     DI_VERSION=1.2.2 \
     JOLOKIA_VERSION=1.6.1 \
-    PROMETHEUS_VERSION=0.11.0 \
+    EXPORTER_VERSION=0.9.7 \
     PATH=$PATH:/usr/local/apache-cassandra/bin:/usr/local/apache-cassandra/tools/bin/
-
 
 COPY files /
 
@@ -67,8 +66,8 @@ RUN set -ex; \
         wget \
         netcat \
         jq; \
-    wget -q -O - "http://search.maven.org/remotecontent?filepath=io/prometheus/jmx/jmx_prometheus_javaagent/${PROMETHEUS_VERSION}/jmx_prometheus_javaagent-${PROMETHEUS_VERSION}.jar" > /usr/local/share/prometheus-agent.jar; \
-    wget -q -O - "http://search.maven.org/remotecontent?filepath=org/jolokia/jolokia-jvm/${JOLOKIA_VERSION}/jolokia-jvm-${JOLOKIA_VERSION}-agent.jar" > /usr/local/share/jolokia-agent.jar; \
+    wget -q -O /usr/local/share/cassandra-exporter-agent.jar https://github.com/instaclustr/cassandra-exporter/releases/download/v${EXPORTER_VERSION}/cassandra-exporter-agent-${EXPORTER_VERSION}.jar; \
+    wget -q -O /usr/local/share/jolokia-agent.jar http://search.maven.org/remotecontent?filepath=org/jolokia/jolokia-jvm/${JOLOKIA_VERSION}/jolokia-jvm-${JOLOKIA_VERSION}-agent.jar; \
     mirror_url=$( wget -q -O - 'https://www.apache.org/dyn/closer.cgi?as_json=1' | jq --raw-output '.preferred' ); \
     wget -q -O - "${mirror_url}cassandra/${CASSANDRA_VERSION}/apache-cassandra-${CASSANDRA_VERSION}-bin.tar.gz" > /usr/local/apache-cassandra-bin.tar.gz; \
     tar -xzf /usr/local/apache-cassandra-bin.tar.gz -C /usr/local; \
@@ -83,7 +82,7 @@ RUN set -ex; \
       /logback.xml \
       /cassandra.yaml \
       /jvm.options \
-      /prometheus.yaml \
+      /exporter.conf \
       /pre_stop.sh \
       $CASSANDRA_CONF; \
     mv /usr/local/apache-cassandra/conf/cassandra-env.sh /etc/cassandra/; \
@@ -128,19 +127,18 @@ RUN set -ex; \
         /usr/share/man/ \
         /tmp/*; \
     \
-    setcap cap_ipc_lock=ep $(readlink -f $(which java)); \
-    setcap -v cap_ipc_lock=ep $(readlink -f $(which java))     
+    setcap cap_ipc_lock=ep $(readlink -f $(which java))
 
 VOLUME ["/var/lib/cassandra"]
 
-# 1234: prometheus jmx_exporter
+# 9500: prometheus jmx_exporter
 # 7000: intra-node communication
 # 7001: TLS intra-node communication
 # 7199: JMX
 # 9042: CQL
 # 9160: thrift service
 # 8778: jolokia port
-EXPOSE 1234 7000 7001 7199 9042 9160 8778
+EXPOSE 9500 7000 7001 7199 9042 9160 8778
 
 USER cassandra
 
