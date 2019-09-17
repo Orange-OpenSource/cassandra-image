@@ -10,7 +10,7 @@ The Images integrates :
 - [Cassandra](http://www.apache.org/dyn/closer.cgi/cassandra) version 3.11.4
 - [Jolokia](http://repo1.maven.org/maven2/org/jolokia/jolokia-jvm/1.6.1/) a **JMX-HTTP** bridge providing JMX with JSON
   over HTTP version 1.6.1
-- [cassandra-exporter](https://github.com/instaclustr/cassandra-exporter) version 0.9.7
+- [cassandra-exporter](https://github.com/instaclustr/cassandra-exporter) version 0.9.8
 - [Dumb-init](https://github.com/Yelp/dumb-init/releases/) a minimal init system for Linux containers version 1.2.2
 - The base Image is  amd64/openjdk:8u212-jre-slim
 
