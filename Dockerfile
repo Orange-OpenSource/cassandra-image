@@ -51,7 +51,7 @@ ENV \
     CASSANDRA_RELEASE=${CASSANDRA_VERSION} \
     DI_VERSION=1.2.2 \
     JOLOKIA_VERSION=1.6.1 \
-    EXPORTER_VERSION=0.9.7 \
+    EXPORTER_VERSION=0.9.8 \
     PATH=$PATH:/usr/local/apache-cassandra/bin:/usr/local/apache-cassandra/tools/bin/
 
 COPY files /
